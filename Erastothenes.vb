@@ -1,10 +1,32 @@
+'handy prime number tester, param is long and function is boolean
+Function testPrimes(param As Long) As Boolean
+
+'variable used
+Dim x As Integer
+
+'algorithm to sort primes from non-primes
+If param < 2 Or (param <> 2 And param Mod 2 = 0) Or param <> Int(param) Then
+    Exit Function
+End If
+'loop for the rest of the numbers    
+For x = 3 To Math.Sqr(param) Step 2
+    If param Mod x = 0 Then
+        Exit Function
+    End If
+Next x
+
+testPrimes = True
+
+End Function
+
+'procedural code to solve problem
 Sub Erastothenes()
 
 'variables
-Dim x, a as Integer
+Dim x, a As Integer
 Dim y, z, c As Long
 
-'improve efficiency
+'improve excel efficiency
 With Application
     .Calculation = xlCalculationManual
     .EnableEvents = False
@@ -28,23 +50,24 @@ End With
 'Sieve of Eratosthenes used to generate graph
 For y = 1 To a
 For z = 1 To a
-For c = 2 To a
     'matrix manipulation
     Cells(y, z) = (y * a) + (z - a)
-        'determine if number is not prime
-        If Cells(y, z) Mod c = 0 And Cells(y, z) <> c Then
+    'pass function along to sort primes from non-primes
+    If testPrimes(Cells(y, z)) = True Then
             With Cells(y, z)
                 .Interior.Color = RGB(0, 0, 0)
                 .Font.Color = RGB(255, 255, 255)
             End With
-        End If
-Next c
+    End If
 Next z
 Next y
 
+    'restore excel parameters
     .Calculation = xlCalculationAutomatic
     .ScreenUpdating = True
     .EnableEvents = True
 End With
 
 End Sub
+
+
